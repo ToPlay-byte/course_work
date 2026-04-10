@@ -4,19 +4,33 @@ from . import models
 from .database import Base, engine
 from .routers.tasks import router as tasks_router
 
-# Create DB tables automatically on app startup (good for local coursework demo).
+# Створюємо таблиці автоматично під час старту застосунку (зручно для курсової).
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
     title="Task Management API",
-    description="Навчальний REST API для системи управління завданнями",
-    version="1.0.0",
+    description=(
+        "Навчальний REST API для системи управління завданнями.\n\n"
+        "Основні можливості:\n"
+        "- створення завдання;\n"
+        "- перегляд списку завдань (з фільтрацією);\n"
+        "- перегляд завдання за ID;\n"
+        "- часткове оновлення (PATCH);\n"
+        "- видалення завдання."
+    ),
+    version="1.1.0",
+    contact={"name": "Coursework API"},
 )
 
-# Register task routes.
+# Підключаємо роутер із CRUD-ендпоінтами для задач.
 app.include_router(tasks_router)
 
 
-@app.get("/")
+@app.get(
+    "/",
+    tags=["Service"],
+    summary="Перевірка доступності API",
+    description="Простий службовий ендпоінт для перевірки, що API запущено.",
+)
 def root() -> dict[str, str]:
     return {"message": "Task Management API is running"}
