@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy.orm import Session
 
 import crud
 import schemas
 from database import get_db
+from enums import TaskPriority, TaskStatus
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
@@ -14,8 +15,12 @@ def create_task(task: schemas.TaskCreate, db: Session = Depends(get_db)) -> sche
 
 
 @router.get("", response_model=list[schemas.TaskResponse])
-def read_tasks(db: Session = Depends(get_db)) -> list[schemas.TaskResponse]:
-    return crud.get_tasks(db)
+def read_tasks(
+    status: TaskStatus | None = Query(default=None),
+    priority: TaskPriority | None = Query(default=None),
+    db: Session = Depends(get_db),
+) -> list[schemas.TaskResponse]:
+    return crud.get_tasks(db, status=status, priority=priority)
 
 
 @router.get("/{task_id}", response_model=schemas.TaskResponse)
@@ -26,7 +31,7 @@ def read_task(task_id: int, db: Session = Depends(get_db)) -> schemas.TaskRespon
     return db_task
 
 
-@router.put("/{task_id}", response_model=schemas.TaskResponse)
+@router.patch("/{task_id}", response_model=schemas.TaskResponse)
 def update_task(
     task_id: int,
     task: schemas.TaskUpdate,

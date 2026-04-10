@@ -1,20 +1,9 @@
 from datetime import datetime
-from enum import Enum
 from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-
-class TaskStatus(str, Enum):
-    NEW = "new"
-    IN_PROGRESS = "in_progress"
-    DONE = "done"
-
-
-class TaskPriority(str, Enum):
-    LOW = "low"
-    MEDIUM = "medium"
-    HIGH = "high"
+from enums import TaskPriority, TaskStatus
 
 
 class TaskCreate(BaseModel):

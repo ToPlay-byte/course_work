@@ -4,7 +4,7 @@ from sqlalchemy import DateTime, Enum, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from database import Base
-from schemas import TaskPriority, TaskStatus
+from enums import TaskPriority, TaskStatus
 
 
 class Task(Base):
