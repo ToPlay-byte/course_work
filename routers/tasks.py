@@ -1,10 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy.orm import Session
 
-import crud
-import schemas
-from database import get_db
-from enums import TaskPriority, TaskStatus
+from .. import crud, schemas
+from ..database import get_db
+from ..enums import TaskPriority, TaskStatus
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])
 

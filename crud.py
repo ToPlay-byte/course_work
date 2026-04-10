@@ -1,9 +1,8 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-import models
-import schemas
-from enums import TaskPriority, TaskStatus
+from . import models, schemas
+from .enums import TaskPriority, TaskStatus
 
 
 def create_task(db: Session, task: schemas.TaskCreate) -> models.Task:

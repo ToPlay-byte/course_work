@@ -1,9 +1,10 @@
 from fastapi import FastAPI
 
-import models
-from database import Base, engine
-from routers.tasks import router as tasks_router
+from . import models
+from .database import Base, engine
+from .routers.tasks import router as tasks_router
 
+# Create DB tables automatically on app startup (good for local coursework demo).
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
@@ -12,6 +13,7 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# Register task routes.
 app.include_router(tasks_router)
 
 

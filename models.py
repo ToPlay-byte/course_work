@@ -3,8 +3,8 @@ from datetime import datetime, timezone
 from sqlalchemy import DateTime, Enum, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
-from database import Base
-from enums import TaskPriority, TaskStatus
+from .database import Base
+from .enums import TaskPriority, TaskStatus
 
 
 class Task(Base):

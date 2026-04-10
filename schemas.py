@@ -1,14 +1,13 @@
 from datetime import datetime
-from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
-from enums import TaskPriority, TaskStatus
+from .enums import TaskPriority, TaskStatus
 
 
 class TaskCreate(BaseModel):
     title: str = Field(..., min_length=1, max_length=200)
-    description: Optional[str] = Field(default=None, max_length=2000)
+    description: str | None = Field(default=None, max_length=2000)
     status: TaskStatus = TaskStatus.NEW
     priority: TaskPriority = TaskPriority.MEDIUM
 
@@ -22,14 +21,14 @@ class TaskCreate(BaseModel):
 
 
 class TaskUpdate(BaseModel):
-    title: Optional[str] = Field(default=None, min_length=1, max_length=200)
-    description: Optional[str] = Field(default=None, max_length=2000)
-    status: Optional[TaskStatus] = None
-    priority: Optional[TaskPriority] = None
+    title: str | None = Field(default=None, min_length=1, max_length=200)
+    description: str | None = Field(default=None, max_length=2000)
+    status: TaskStatus | None = None
+    priority: TaskPriority | None = None
 
     @field_validator("title")
     @classmethod
-    def clean_title(cls, value: Optional[str]) -> Optional[str]:
+    def clean_title(cls, value: str | None) -> str | None:
         if value is None:
             return value
         value = value.strip()
@@ -41,7 +40,7 @@ class TaskUpdate(BaseModel):
 class TaskResponse(BaseModel):
     id: int
     title: str
-    description: Optional[str] = None
+    description: str | None = None
     status: TaskStatus
     priority: TaskPriority
     created_at: datetime
